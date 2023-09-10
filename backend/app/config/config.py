@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     # 项目配置
     PROJECT_NAME: str = "GoldEngine API"
     PROJECT_VERSION: str = "1.0.0"
+    PROJECT_DESCRIPTION: str = "GoldEngine API"
 
     # token配置
     SECRET_KEY: str = secrets.token_hex(24)

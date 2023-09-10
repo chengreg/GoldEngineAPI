@@ -7,7 +7,7 @@
 
 from typing import List, Optional
 from sqlmodel import Relationship, SQLModel, Field
-from .mixins import TimeMixin
+from backend.app.model.mixins import TimeMixin
 from .user_role import UserRole
 
 

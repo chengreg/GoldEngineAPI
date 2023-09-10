@@ -10,7 +10,7 @@ from sqlalchemy import Column, String, UniqueConstraint
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Enum
 
-from .mixins import TimeMixin
+from backend.app.model.mixins import TimeMixin
 from .user_role import UserRole
 
 
@@ -40,5 +40,7 @@ class Users(SQLModel, TimeMixin, table=True):
     user_profile: Optional["UserProfile"] = Relationship(back_populates="users")
 
     roles: List["Role"] = Relationship(back_populates="users", link_model=UserRole)
+
+    social_accounts: List["SocialAccount"] = Relationship(back_populates="users")
 
     __table_args__ = (UniqueConstraint('country_code', 'phone_number', name='uq_countrycode_phonenumber'),)

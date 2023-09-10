@@ -7,7 +7,7 @@
 
 from typing import Optional
 from sqlmodel import SQLModel, Field
-from .mixins import TimeMixin
+from backend.app.model.mixins import TimeMixin
 
 
 class UserRole(SQLModel,TimeMixin,table=True):

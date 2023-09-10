@@ -6,20 +6,41 @@
 # @Software: PyCharm
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from backend.app.config import settings
+from backend.app.db.db_postgresql_asyncpg import db
 
 
 def init_app():
-    app = FastAPI()
+    # 初始化数据库
+    db.init()
 
-    @app.on_event("startup")
+    # 初始化FastAPI
+    _app = FastAPI(
+        title=settings.PROJECT_NAME,
+        description=settings.PROJECT_DESCRIPTION,
+        version=settings.PROJECT_VERSION,
+    )
+
+    # 跨域设置
+    _app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # 允许所有域名访问 #TODO: 上线时需要修改
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"]
+    )
+
+    # 事件
+    @_app.on_event("startup")
     async def startup():
         pass
 
-    @app.on_event("shutdown")
+    @_app.on_event("shutdown")
     async def shutdown():
         pass
 
-    return app
+    return _app
 
 
 app = init_app()
@@ -32,5 +53,4 @@ async def root():
 
 if __name__ == '__main__':
     import uvicorn
-
     uvicorn.run(app='main:app', host="localhost", port=8844, reload=True)
