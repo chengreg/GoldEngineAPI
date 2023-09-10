@@ -14,4 +14,4 @@ class UserRole(SQLModel,TimeMixin,table=True):
     __tablename__= "user_role"
 
     users_id: Optional[str] = Field(default=None, foreign_key="users.id",primary_key=True)
-    role_id: Optional[str] = Field(default=None, foreign_key="role.id",primary_key=True)
+    role_id: Optional[int] = Field(default=None, foreign_key="role.id",primary_key=True)

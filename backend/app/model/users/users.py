@@ -36,7 +36,7 @@ class Users(SQLModel, TimeMixin, table=True):
 
     status: Status
 
-    user_profile_id: Optional[str] = Field(None, foreign_key="user_profile.id")
+    user_profile_id: Optional[int] = Field(None, foreign_key="user_profile.id")
     user_profile: Optional["UserProfile"] = Relationship(back_populates="users")
 
     roles: List["Role"] = Relationship(back_populates="users", link_model=UserRole)

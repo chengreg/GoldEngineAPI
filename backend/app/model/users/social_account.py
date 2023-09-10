@@ -29,7 +29,7 @@ class ProviderEnum(str, Enum):
 class SocialAccount(SQLModel, TimeMixin, table=True):
     __tablename__ = "social_account"
 
-    id: Optional[str] = Field(None, primary_key=True, nullable=False)
+    id: Optional[int] = Field(default="autoincrement", primary_key=True)
     user_id: str = Field(foreign_key="users.id")
     provider: ProviderEnum
     provider_user_id: str

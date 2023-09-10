@@ -9,6 +9,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.config import settings
 from backend.app.db.db_postgresql_asyncpg import db
+from loguru import logger
+from backend.app.core.generate_sql_data import generate_role
 
 
 def init_app():
@@ -34,11 +36,14 @@ def init_app():
     # 事件
     @_app.on_event("startup")
     async def startup():
-        pass
+        logger.info("项目启动")
+        await db.create_all()
+        await generate_role()
 
     @_app.on_event("shutdown")
     async def shutdown():
-        pass
+        logger.info("项目关闭")
+        await db.close()
 
     return _app
 

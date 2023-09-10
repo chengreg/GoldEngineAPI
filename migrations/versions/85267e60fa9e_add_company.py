@@ -1,8 +1,8 @@
 """add company
 
-Revision ID: bd7d671853f0
+Revision ID: 85267e60fa9e
 Revises: 
-Create Date: 2023-09-10 15:50:38.462603
+Create Date: 2023-09-10 16:24:28.203589
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 import sqlmodel
 
 # revision identifiers, used by Alembic.
-revision: str = 'bd7d671853f0'
+revision: str = '85267e60fa9e'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,34 +23,14 @@ def upgrade() -> None:
     op.create_table('role',
     sa.Column('modified_at', sa.DateTime(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('role_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('user_profile_address',
-    sa.Column('modified_at', sa.DateTime(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('street', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('city', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('state', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('postal_code', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('country', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('user_profile_company',
-    sa.Column('modified_at', sa.DateTime(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('address', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('phone_number', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_profile',
     sa.Column('modified_at', sa.DateTime(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('nickname', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('date_of_birth', sa.Date(), nullable=False),
@@ -60,10 +40,30 @@ def upgrade() -> None:
     sa.Column('province', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('city', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('country', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('user_profile_address_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('user_profile_company_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.ForeignKeyConstraint(['user_profile_address_id'], ['user_profile_address.id'], ),
-    sa.ForeignKeyConstraint(['user_profile_company_id'], ['user_profile_company.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('user_profile_address',
+    sa.Column('modified_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('street', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('city', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('state', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('postal_code', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('country', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('user_profile_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user_profile_id'], ['user_profile.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('user_profile_company',
+    sa.Column('modified_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('address', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('phone_number', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('user_profile_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user_profile_id'], ['user_profile.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
@@ -76,7 +76,7 @@ def upgrade() -> None:
     sa.Column('country_code', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('phone_number', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('status', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('user_profile_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('user_profile_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_profile_id'], ['user_profile.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('country_code', 'phone_number', name='uq_countrycode_phonenumber'),
@@ -86,7 +86,7 @@ def upgrade() -> None:
     op.create_table('social_account',
     sa.Column('modified_at', sa.DateTime(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('provider', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('provider_user_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
@@ -100,7 +100,7 @@ def upgrade() -> None:
     sa.Column('modified_at', sa.DateTime(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('users_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('role_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('role_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),
     sa.ForeignKeyConstraint(['users_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('users_id', 'role_id')
@@ -113,8 +113,8 @@ def downgrade() -> None:
     op.drop_table('user_role')
     op.drop_table('social_account')
     op.drop_table('users')
-    op.drop_table('user_profile')
     op.drop_table('user_profile_company')
     op.drop_table('user_profile_address')
+    op.drop_table('user_profile')
     op.drop_table('role')
     # ### end Alembic commands ###

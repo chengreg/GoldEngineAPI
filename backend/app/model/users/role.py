@@ -14,7 +14,7 @@ from .user_role import UserRole
 class Role(SQLModel, TimeMixin, table=True):
     __tablename__ = "role"
 
-    id: Optional[str] = Field(None, primary_key=True, nullable=True)
+    id: Optional[int] = Field(default="autoincrement", primary_key=True)
     role_name: str
 
     users: List["Users"] = Relationship(back_populates="roles", link_model=UserRole)
