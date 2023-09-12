@@ -5,12 +5,12 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 
+from .social_account import SocialAccount, ProviderEnum
+from .user_profile import UserProfile, SexEnum
 from .user_profile_address import UserProfileAddress
 from .user_profile_company import UserProfileCompany
-from .role import Role
-from .social_account import SocialAccount, ProviderEnum
-from .user_profile import UserProfile
 from .user_role import UserRole
+from .user_role_link import UserRoleLink
 from .users import Users, Status
 
 

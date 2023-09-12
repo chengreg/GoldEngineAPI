@@ -24,23 +24,29 @@ class Status(str, Enum):
 
 
 class Users(SQLModel, TimeMixin, table=True):
+    """
+    用户表: 用于存储用户的基本信息
+    primary_key: 主键
+    unique: 唯一
+    index: 索引
+    nullable: 可空
+    comment: 注释
+    Optional: 可选
+    """
     __tablename__ = "users"
 
-    id: Optional[str] = Field(None, primary_key=True, nullable=False)
-    username: str = Field(sa_column=Column("username", String, unique=True))
-    email: str = Field(sa_column=Column("email", String, unique=True))
-    hashed_password: str = Field(sa_column=Column("hashed_password", String))
-
-    country_code: str
-    phone_number: str
-
+    id: str = Field(sa_column=Column("id", String(length=128), primary_key=True, unique=True, index=True, comment="用户ID"))
+    username: str = Field(sa_column=Column("username", String(length=50), unique=True, nullable=False, index=True, comment="用户名"))
+    email: Optional[str] = Field(sa_column=Column("email", String(length=254), unique=True, nullable=True, index=True, comment="用户邮箱"))
+    hashed_password: str = Field(sa_column=Column("hashed_password", String(length=128), nullable=False, comment="用户密码"))
+    country_code: Optional[str] = Field(sa_column=Column("country_code", String(length=10), nullable=False, comment="国家代码"))
+    phone_number: Optional[str] = Field(sa_column=Column("phone_number", String(length=20), nullable=False, comment="手机号码"))
     status: Status
 
     user_profile_id: Optional[int] = Field(None, foreign_key="user_profile.id")
+
     user_profile: Optional["UserProfile"] = Relationship(back_populates="users")
-
-    roles: List["Role"] = Relationship(back_populates="users", link_model=UserRole)
-
+    roles: Optional[UserRole] = Relationship(back_populates="users")
     social_accounts: List["SocialAccount"] = Relationship(back_populates="users")
 
     __table_args__ = (UniqueConstraint('country_code', 'phone_number', name='uq_countrycode_phonenumber'),)

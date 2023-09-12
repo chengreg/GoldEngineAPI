@@ -7,8 +7,8 @@
 
 from datetime import date
 from typing import Optional
-from sqlalchemy import Enum
-from sqlmodel import SQLModel, Field, Relationship
+# from sqlalchemy import Enum
+from sqlmodel import SQLModel, Field, Relationship, Column, Integer, String, Date, Enum
 from backend.app.model.mixins import TimeMixin
 
 
@@ -29,13 +29,15 @@ class ProviderEnum(str, Enum):
 class SocialAccount(SQLModel, TimeMixin, table=True):
     __tablename__ = "social_account"
 
-    id: Optional[int] = Field(default="autoincrement", primary_key=True)
-    user_id: str = Field(foreign_key="users.id")
+    id: int = Field(sa_column=Column("id", Integer, primary_key=True, unique=True, index=True, comment="用户社交ID"))
+    # provider: ProviderEnum = Field(sa_column=Column("provider", Enum(ProviderEnum),  nullable=False, comment="第三方平台"))
     provider: ProviderEnum
-    provider_user_id: str
-    access_token: str
-    refresh_token: str
-    expires_at: date
+    provider_user_id: str = Field(sa_column=Column("provider_user_id", String(length=255), nullable=False, comment="第三方平台用户ID"))
+    access_token: str = Field(sa_column=Column("access_token", String(length=255), nullable=False, comment="第三方平台用户访问令牌"))
+    refresh_token: str = Field(sa_column=Column("refresh_token", String(length=255), nullable=False, comment="第三方平台用户刷新令牌"))
+    expires_at: date = Field(sa_column=Column("expires_at", Date, nullable=False, comment="第三方平台用户令牌过期时间"))
+
+    user_id: str = Field(foreign_key="users.id")
 
     users: Optional["Users"] = Relationship(
         sa_relationship_kwargs={'uselist': False}, back_populates="social_account")

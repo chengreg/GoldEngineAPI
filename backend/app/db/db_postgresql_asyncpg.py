@@ -25,6 +25,7 @@ class AsyncDatabaseSession:
         self.engine = create_async_engine(settings.POSTGRESQL_DB, future=True, echo=True)
         self.session = sessionmaker(self.engine, expire_on_commit=False, class_=AsyncSession)()
 
+
     async def create_all(self):
         async with self.engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)

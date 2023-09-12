@@ -11,7 +11,8 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     # 数据库配置
-    POSTGRESQL_DB: str = "postgresql+asyncpg://root:Chen0521@43.137.2.28:5432/test05"
+    # POSTGRESQL_DB: str = "postgresql+asyncpg://root:Chen0521@43.137.2.28:5432/test05"
+    MYSQL_DB: str = "mysql+aiomysql://root:Chen0521@nj-cdb-mobsmdsb.sql.tencentcdb.com:63940/test"
 
     # 项目配置
     PROJECT_NAME: str = "GoldEngine API"
