@@ -1,8 +1,8 @@
-"""changed user role to json
+"""not fix enum
 
-Revision ID: 4220910d747f
+Revision ID: 63b4cdf6cfc5
 Revises: 
-Create Date: 2023-09-12 23:59:42.107525
+Create Date: 2023-09-13 01:27:36.439198
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 import sqlmodel
 
 # revision identifiers, used by Alembic.
-revision: str = '4220910d747f'
+revision: str = '63b4cdf6cfc5'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,12 +27,12 @@ def upgrade() -> None:
     sa.Column('name', sa.String(length=50), nullable=True, comment='用户姓名'),
     sa.Column('nickname', sa.String(length=50), nullable=True, comment='用户昵称'),
     sa.Column('date_of_birth', sa.Date(), nullable=True, comment='出生日期'),
+    sa.Column('gender', sa.String(length=2), nullable=True, comment='性别'),
     sa.Column('avatar', sa.String(length=255), nullable=True, comment='用户头像'),
     sa.Column('bio', sa.String(length=255), nullable=True, comment='用户简介'),
     sa.Column('province', sa.String(length=50), nullable=True, comment='省份'),
     sa.Column('city', sa.String(length=50), nullable=True, comment='城市'),
     sa.Column('country', sa.String(length=50), nullable=True, comment='国家'),
-    sa.Column('gender', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_profile_id'), 'user_profile', ['id'], unique=True)
@@ -84,7 +84,7 @@ def upgrade() -> None:
     sa.Column('hashed_password', sa.String(length=128), nullable=False, comment='用户密码'),
     sa.Column('country_code', sa.String(length=10), nullable=False, comment='国家代码'),
     sa.Column('phone_number', sa.String(length=20), nullable=False, comment='手机号码'),
-    sa.Column('status', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('status', sa.String(length=10), nullable=False, comment='用户状态'),
     sa.Column('user_profile_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_profile_id'], ['user_profile.id'], ),
     sa.PrimaryKeyConstraint('id'),
@@ -97,11 +97,11 @@ def upgrade() -> None:
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('modified_at', sa.DateTime(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False, comment='用户社交ID'),
+    sa.Column('provider', sa.String(length=50), nullable=False, comment='第三方平台'),
     sa.Column('provider_user_id', sa.String(length=255), nullable=False, comment='第三方平台用户ID'),
     sa.Column('access_token', sa.String(length=255), nullable=False, comment='第三方平台用户访问令牌'),
     sa.Column('refresh_token', sa.String(length=255), nullable=False, comment='第三方平台用户刷新令牌'),
     sa.Column('expires_at', sa.Date(), nullable=False, comment='第三方平台用户令牌过期时间'),
-    sa.Column('provider', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('user_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

@@ -23,7 +23,7 @@ class UserRole(SQLModel, TimeMixin, table=True):
 
     # meta: Dict = Field(default={}, sa_column=Column(JSON))
 
-    users: Optional["Users"] = Relationship(back_populates="roles")
+    users: Optional["Users"] = Relationship(back_populates="user_role")
 
 
     class Config:

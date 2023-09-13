@@ -27,7 +27,7 @@ class UserProfile(SQLModel, TimeMixin, table=True):
     nickname: Optional[str] = Field(sa_column=Column("nickname", String(length=50), index=True, comment="用户昵称"))
     date_of_birth: date = Field(sa_column=Column("date_of_birth", Date, comment="出生日期"))
     # gender: SexEnum = Field(sa_column=Column("sex", Enum(SexEnum), comment="性别"))
-    gender: SexEnum
+    gender: Optional[str] = Field(sa_column=Column("gender", String(length=2), comment="性别"))
     avatar: Optional[str] = Field(sa_column=Column("avatar", String(length=255), comment="用户头像"))
     bio: Optional[str] = Field(sa_column=Column("bio", String(length=255), comment="用户简介"))
     province: Optional[str] = Field(sa_column=Column("province", String(length=50), comment="省份"))

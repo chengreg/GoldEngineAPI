@@ -7,4 +7,5 @@
 
 from .mixins import TimeMixin
 
-from .users import UserRoleLink, SocialAccount, UserProfile, UserRole, Users
+from .users import (UserRoleLink, SocialAccount, UserProfile, UserRole, Users,
+                    UserProfileAddress, UserProfileCompany, UsersStatusEnum, SexEnum, ProviderEnum)

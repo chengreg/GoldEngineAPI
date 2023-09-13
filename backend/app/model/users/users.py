@@ -9,12 +9,15 @@ from typing import List, Optional
 from sqlalchemy import Column, String, UniqueConstraint
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Enum
+# from enum import Enum
 
 from backend.app.model.mixins import TimeMixin
 from .user_role import UserRole
 
+from sqlalchemy.orm import relationship
 
-class Status(str, Enum):
+
+class UsersStatusEnum(str, Enum):
     ACTIVE = "A"  # 活跃状态，表示用户或对象处于活跃状态，通常表示用户可以正常使用平台或功能。
     INACTIVE = "I"  # 非活跃状态，表示用户或对象处于非活跃状态，通常表示用户暂时无法使用平台或功能。
     DELETED = "D"  # 用户已删除，该用户信息将从系统中删除，不再可用。
@@ -41,12 +44,16 @@ class Users(SQLModel, TimeMixin, table=True):
     hashed_password: str = Field(sa_column=Column("hashed_password", String(length=128), nullable=False, comment="用户密码"))
     country_code: Optional[str] = Field(sa_column=Column("country_code", String(length=10), nullable=False, comment="国家代码"))
     phone_number: Optional[str] = Field(sa_column=Column("phone_number", String(length=20), nullable=False, comment="手机号码"))
-    status: Status
+    # todo: 通过枚举来定义用户状态有bug未解决，先用str代替
+    # status: UsersStatusEnum = Field(sa_column=Column("status", Enum(UsersStatusEnum), nullable=False, comment="用户状态"))
+    status: str = Field(sa_column=Column("status", String(length=10), nullable=False, comment="用户状态"))
 
     user_profile_id: Optional[int] = Field(None, foreign_key="user_profile.id")
 
     user_profile: Optional["UserProfile"] = Relationship(back_populates="users")
-    roles: Optional[UserRole] = Relationship(back_populates="users")
+    user_role: Optional[UserRole] = Relationship(back_populates="users")
     social_accounts: List["SocialAccount"] = Relationship(back_populates="users")
+
+    # social_accounts: List["SocialAccount"] = relationship("SocialAccount", back_populates="user")
 
     __table_args__ = (UniqueConstraint('country_code', 'phone_number', name='uq_countrycode_phonenumber'),)

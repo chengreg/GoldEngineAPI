@@ -11,6 +11,6 @@ from .user_profile_address import UserProfileAddress
 from .user_profile_company import UserProfileCompany
 from .user_role import UserRole
 from .user_role_link import UserRoleLink
-from .users import Users, Status
+from .users import Users, UsersStatusEnum
 
 
