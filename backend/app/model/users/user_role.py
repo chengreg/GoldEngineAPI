@@ -6,18 +6,17 @@
 # @Software: PyCharm
 
 from typing import Optional, Dict
-from pydantic import validator
 from sqlmodel import SQLModel, Field, JSON, Relationship
 from backend.app.model.mixins import TimeMixin
 from sqlalchemy import Column, Integer, String
-
 
 
 class UserRole(SQLModel, TimeMixin, table=True):
     __tablename__ = "user_role"
 
     id: int = Field(sa_column=Column("id", Integer, primary_key=True, unique=True, index=True, comment="用户权限ID"))
-    name: str = Field(sa_column=Column("name", String(length=50), unique=True, nullable=False, index=True, comment="用户权限名称"))
+    name: str = Field(
+        sa_column=Column("name", String(length=50), unique=True, nullable=False, index=True, comment="用户权限名称"))
     description: Optional[str] = Field(sa_column=Column("description", String(length=255), comment="用户权限描述"))
     permission: Dict = Field(sa_column=Column("permission", JSON, comment="用户权限"))
 
@@ -25,10 +24,8 @@ class UserRole(SQLModel, TimeMixin, table=True):
 
     users: Optional["Users"] = Relationship(back_populates="user_role")
 
-
     class Config:
         arbitrary_types_allowed = True
-
 
     # # 示例用法
 # role_data = {

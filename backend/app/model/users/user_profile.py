@@ -7,12 +7,14 @@
 
 from datetime import date
 from typing import Optional, List
-from sqlalchemy import Enum, Column, String, Integer, Date
+from sqlalchemy import Column, String, Integer, Date
+from sqlalchemy import Enum as saEnum
+from enum import Enum as pyEnum
 from sqlmodel import SQLModel, Field, Relationship
 from backend.app.model.mixins import TimeMixin
 
 
-class SexEnum(str, Enum):
+class SexEnum(str, pyEnum):
     MALE = "M"
     FEMALE = "F"
     OTHER = "O"
@@ -26,8 +28,7 @@ class UserProfile(SQLModel, TimeMixin, table=True):
     name: Optional[str] = Field(sa_column=Column("name", String(length=50), index=True, comment="用户姓名"))
     nickname: Optional[str] = Field(sa_column=Column("nickname", String(length=50), index=True, comment="用户昵称"))
     date_of_birth: date = Field(sa_column=Column("date_of_birth", Date, comment="出生日期"))
-    # gender: SexEnum = Field(sa_column=Column("sex", Enum(SexEnum), comment="性别"))
-    gender: Optional[str] = Field(sa_column=Column("gender", String(length=2), comment="性别"))
+    gender: SexEnum = Field(sa_column=Column("sex", saEnum(SexEnum), comment="性别"))
     avatar: Optional[str] = Field(sa_column=Column("avatar", String(length=255), comment="用户头像"))
     bio: Optional[str] = Field(sa_column=Column("bio", String(length=255), comment="用户简介"))
     province: Optional[str] = Field(sa_column=Column("province", String(length=50), comment="省份"))

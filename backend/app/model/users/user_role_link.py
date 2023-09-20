@@ -5,7 +5,7 @@
 # @File    : role.py
 # @Software: PyCharm
 
-from typing import List, Optional
+from typing import Optional
 from sqlmodel import SQLModel, Field
 from backend.app.model.mixins import TimeMixin
 
