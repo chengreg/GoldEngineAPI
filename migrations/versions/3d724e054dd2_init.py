@@ -1,8 +1,8 @@
-"""not fix enum
+"""init
 
-Revision ID: 63b4cdf6cfc5
+Revision ID: 3d724e054dd2
 Revises: 
-Create Date: 2023-09-13 01:27:36.439198
+Create Date: 2023-09-21 00:34:08.385140
 
 """
 from typing import Sequence, Union
@@ -11,8 +11,9 @@ from alembic import op
 import sqlalchemy as sa
 import sqlmodel
 
+
 # revision identifiers, used by Alembic.
-revision: str = '63b4cdf6cfc5'
+revision: str = '3d724e054dd2'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +28,7 @@ def upgrade() -> None:
     sa.Column('name', sa.String(length=50), nullable=True, comment='用户姓名'),
     sa.Column('nickname', sa.String(length=50), nullable=True, comment='用户昵称'),
     sa.Column('date_of_birth', sa.Date(), nullable=True, comment='出生日期'),
-    sa.Column('gender', sa.String(length=2), nullable=True, comment='性别'),
+    sa.Column('sex', sa.Enum('MALE', 'FEMALE', 'OTHER', name='sexenum'), nullable=True, comment='性别'),
     sa.Column('avatar', sa.String(length=255), nullable=True, comment='用户头像'),
     sa.Column('bio', sa.String(length=255), nullable=True, comment='用户简介'),
     sa.Column('province', sa.String(length=50), nullable=True, comment='省份'),
@@ -84,7 +85,7 @@ def upgrade() -> None:
     sa.Column('hashed_password', sa.String(length=128), nullable=False, comment='用户密码'),
     sa.Column('country_code', sa.String(length=10), nullable=False, comment='国家代码'),
     sa.Column('phone_number', sa.String(length=20), nullable=False, comment='手机号码'),
-    sa.Column('status', sa.String(length=10), nullable=False, comment='用户状态'),
+    sa.Column('status', sa.Enum('ACTIVE', 'INACTIVE', 'DELETED', 'BLOCKED', 'LOCKED', 'PENDING', name='usersstatusenum'), nullable=False, comment='用户状态'),
     sa.Column('user_profile_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_profile_id'], ['user_profile.id'], ),
     sa.PrimaryKeyConstraint('id'),
@@ -97,7 +98,7 @@ def upgrade() -> None:
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('modified_at', sa.DateTime(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False, comment='用户社交ID'),
-    sa.Column('provider', sa.String(length=50), nullable=False, comment='第三方平台'),
+    sa.Column('provider', sa.Enum('GOOGLE', 'FACEBOOK', 'TWITTER', 'GITHUB', 'LINKEDIN', 'WEIBO', 'WEIXIN', 'QQ', 'ALIPAY', name='providerenum'), nullable=False, comment='第三方平台'),
     sa.Column('provider_user_id', sa.String(length=255), nullable=False, comment='第三方平台用户ID'),
     sa.Column('access_token', sa.String(length=255), nullable=False, comment='第三方平台用户访问令牌'),
     sa.Column('refresh_token', sa.String(length=255), nullable=False, comment='第三方平台用户刷新令牌'),

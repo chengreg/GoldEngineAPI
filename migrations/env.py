@@ -11,6 +11,7 @@ from alembic import context
 
 
 from backend.app.model import *
+from decouple import config as decouple_config
 
 
 # this is the Alembic Config object, which provides
@@ -45,9 +46,9 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    database_url = decouple_config('DATABASE_URL')
     context.configure(
-        url=url,
+        url=database_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -71,9 +72,10 @@ async def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    database_url = decouple_config('DATABASE_URL')
     connectable = AsyncEngine(
         engine_from_config(
-            config.get_section(config.config_ini_section),
+            {"sqlalchemy.url": database_url},
             prefix="sqlalchemy.",
             poolclass=pool.NullPool,
             future=True,
