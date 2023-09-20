@@ -1,6 +1,12 @@
+## 开发日志
+### 2023-09-10
+- [x] 1. 项目初始化
 
 
-## alembic使用方式  
- **alembic init -t async migrations  
- alembic revision --autogenerate -m "init"  
- alembic upgrade head  
+### 2023-09-21
+- [x] 1. 完成了数据库中用户表、资料表、社交表、权限表等表的创建
+- [x] 2. 部分完成用户名注册、手机号码注册的接口
+
+待完成：
+- [ ] 1. 用户注册成功后，返回token的功能
+
