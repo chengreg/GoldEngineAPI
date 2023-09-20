@@ -11,7 +11,7 @@ from sqlalchemy import Column, String, Integer, Date
 from sqlalchemy import Enum as saEnum
 from enum import Enum as pyEnum
 from sqlmodel import SQLModel, Field, Relationship
-from backend.app.model.mixins import TimeMixin
+from backend.app.model.users import TimeMixin
 
 
 class SexEnum(str, pyEnum):
@@ -36,7 +36,8 @@ class UserProfile(SQLModel, TimeMixin, table=True):
     country: Optional[str] = Field(sa_column=Column("country", String(length=50), comment="国家"))
 
     user_profile_address: List["UserProfileAddress"] = Relationship(back_populates="user_profile")
-    user_profile_company: List["UserProfileCompany"] = Relationship(back_populates="user_profile")
+    user_profile_companies: List["UserProfileCompany"] = Relationship(back_populates="user_profile")
+    # user_profile_company: List["UserProfileCompany"] = Relationship(back_populates="user_profile")
 
     users: Optional["Users"] = Relationship(
         sa_relationship_kwargs={'uselist': False}, back_populates="user_profile")

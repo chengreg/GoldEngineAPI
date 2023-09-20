@@ -4,3 +4,5 @@
 # @Email   : uoaoo@163.com
 # @File    : __init__.py.py
 # @Software: PyCharm
+
+from .register_schema import RegisterByUsernameSchema, RegisterByPhoneNumberSchema

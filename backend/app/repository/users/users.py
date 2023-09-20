@@ -11,8 +11,9 @@ from sqlalchemy import update as sql_update
 from sqlalchemy.future import select
 
 
-from backend.app.db.db_postgresql_asyncpg import db, commit_rollback
-from backend.app.model.users import Users
+from backend.app.db.db_mysql_aiomysql import db, commit_rollback
+
+from backend.app.model.users.users import Users
 from ..base_repo import BaseRepo
 
 
@@ -35,3 +36,13 @@ class UsersRepository(BaseRepo):
             password=password).execution_options(synchronize_session="fetch")
         await db.execute(query)
         await commit_rollback()
+
+    @staticmethod
+    async def find_by_phone_number(phone_number: str):
+        query = select(Users).where(Users.phone_number == phone_number)
+        return (await db.execute(query)).scalar_one_or_none()
+
+    @staticmethod
+    async def find_by_country_code_and_phone_number(country_code: str, phone_number: str):
+        query = select(Users).where(Users.country_code == country_code, Users.phone_number == phone_number)
+        return (await db.execute(query)).scalar_one_or_none()

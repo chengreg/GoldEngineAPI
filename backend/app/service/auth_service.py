@@ -26,7 +26,6 @@ class AuthService:
     async def register_service(register: RegisterSchema):
 
         # Create uuid
-        _person_id = str(uuid4())
         _users_id = str(uuid4())
 
         # convert birth date type from frontend str to date

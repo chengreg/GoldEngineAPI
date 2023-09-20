@@ -11,8 +11,8 @@ from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Enum as saEnum
 from enum import Enum as pyEnum
 
-from backend.app.model.mixins import TimeMixin
-from .user_role import UserRole
+from backend.app.model.users import TimeMixin
+
 
 
 class UsersStatusEnum(str, pyEnum):
@@ -37,19 +37,19 @@ class Users(SQLModel, TimeMixin, table=True):
     __tablename__ = "users"
 
     id: str = Field(sa_column=Column("id", String(length=128), primary_key=True, unique=True, index=True, comment="用户ID"))
-    username: str = Field(sa_column=Column("username", String(length=50), unique=True, nullable=False, index=True, comment="用户名"))
+    username: str = Field(sa_column=Column("username", String(length=50), unique=True, nullable=True, index=True, comment="用户名"))
     email: Optional[str] = Field(sa_column=Column("email", String(length=254), unique=True, nullable=True, index=True, comment="用户邮箱"))
-    hashed_password: str = Field(sa_column=Column("hashed_password", String(length=128), nullable=False, comment="用户密码"))
-    country_code: Optional[str] = Field(sa_column=Column("country_code", String(length=10), nullable=False, comment="国家代码"))
-    phone_number: Optional[str] = Field(sa_column=Column("phone_number", String(length=20), nullable=False, comment="手机号码"))
-    status: UsersStatusEnum = Field(sa_column=Column("status", saEnum(UsersStatusEnum), nullable=False, comment="用户状态"))
+    hashed_password: str = Field(sa_column=Column("hashed_password", String(length=128), nullable=True, comment="用户密码"))
+    country_code: Optional[str] = Field(sa_column=Column("country_code", String(length=10), nullable=True, comment="国家代码"))
+    phone_number: Optional[str] = Field(sa_column=Column("phone_number", String(length=20), nullable=True, comment="手机号码"))
+    status: UsersStatusEnum = Field(default=UsersStatusEnum.ACTIVE,
+                                    sa_column=Column("status", saEnum(UsersStatusEnum), nullable=False, comment="用户状态"))
 
     user_profile_id: Optional[int] = Field(None, foreign_key="user_profile.id")
 
     user_profile: Optional["UserProfile"] = Relationship(back_populates="users")
-    user_role: Optional[UserRole] = Relationship(back_populates="users")
     social_accounts: List["SocialAccount"] = Relationship(back_populates="users")
+    user_roles: List["UserRoleLink"] = Relationship(back_populates="user")
 
-    # social_accounts: List["SocialAccount"] = relationship("SocialAccount", back_populates="user")
-
+    # UniqueConstraint确保同一个国家代码和电话号码的组合是唯一的
     __table_args__ = (UniqueConstraint('country_code', 'phone_number', name='uq_countrycode_phonenumber'),)

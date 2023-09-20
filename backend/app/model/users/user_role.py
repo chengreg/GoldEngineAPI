@@ -5,9 +5,9 @@
 # @File    : user_role.py
 # @Software: PyCharm
 
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 from sqlmodel import SQLModel, Field, JSON, Relationship
-from backend.app.model.mixins import TimeMixin
+from backend.app.model.users import TimeMixin
 from sqlalchemy import Column, Integer, String
 
 
@@ -22,7 +22,7 @@ class UserRole(SQLModel, TimeMixin, table=True):
 
     # meta: Dict = Field(default={}, sa_column=Column(JSON))
 
-    users: Optional["Users"] = Relationship(back_populates="user_role")
+    users: List["UserRoleLink"] = Relationship(back_populates="role")
 
     class Config:
         arbitrary_types_allowed = True

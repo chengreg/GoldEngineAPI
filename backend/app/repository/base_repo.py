@@ -8,7 +8,7 @@
 from typing import Generic, TypeVar
 from sqlalchemy import update as sql_update, delete as sql_delete
 from sqlalchemy.future import select
-from backend.app.db.db_postgresql_asyncpg import db, commit_rollback
+from backend.app.db.db_mysql_aiomysql import db, commit_rollback
 
 T = TypeVar('T')
 

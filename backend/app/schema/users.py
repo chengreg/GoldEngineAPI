@@ -14,7 +14,7 @@ import re
 from typing import TypeVar, Optional
 
 from pydantic import BaseModel, validator
-from backend.app.model.users.user_profile import Sex
+from backend.app.model.users.user_profile import SexEnum
 
 
 T = TypeVar('T')
@@ -31,7 +31,7 @@ class RegisterSchema(BaseModel):
     password: str
     phone_number: str
     birth: str
-    sex: Sex
+    sex: SexEnum
     profile: str = "base64"
 
     # phone number validation
@@ -49,7 +49,7 @@ class RegisterSchema(BaseModel):
     # Sex validation
     @validator("sex")
     def sex_validation(cls, v):
-        if hasattr(Sex, v) is False:
+        if hasattr(SexEnum, v) is False:
             raise HTTPException(status_code=400, detail="Invalid input sex")
         return v
 

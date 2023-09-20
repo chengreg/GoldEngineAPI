@@ -9,9 +9,15 @@ from sqlmodel import SQLModel
 
 from alembic import context
 
-
-from backend.app.model import *
 from decouple import config as decouple_config
+
+from backend.app.model.users.user_role import UserRole
+from backend.app.model.users.user_role_link import UserRoleLink
+from backend.app.model.users.users import Users
+from backend.app.model.users.user_profile import UserProfile
+from backend.app.model.users.social_account import SocialAccount
+from backend.app.model.users.user_profile_address import UserProfileAddress
+from backend.app.model.users.user_profile_company import UserProfileCompany
 
 
 # this is the Alembic Config object, which provides

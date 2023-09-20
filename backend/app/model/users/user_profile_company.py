@@ -7,7 +7,7 @@
 
 from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship, Integer, Column, String
-from backend.app.model.mixins import TimeMixin
+from backend.app.model.users import TimeMixin
 
 
 class UserProfileCompany(SQLModel, TimeMixin, table=True):
@@ -20,5 +20,4 @@ class UserProfileCompany(SQLModel, TimeMixin, table=True):
 
     user_profile_id: int = Field(foreign_key="user_profile.id")
 
-    user_profile: Optional["UserProfile"] = Relationship(
-        sa_relationship_kwargs={'uselist': False}, back_populates="user_profile_company")
+    user_profile: Optional["UserProfile"] = Relationship(back_populates="user_profile_companies")

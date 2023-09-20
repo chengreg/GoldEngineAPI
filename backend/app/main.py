@@ -11,7 +11,6 @@ from backend.app.config import settings
 # from backend.app.db.db_postgresql_asyncpg import db
 from backend.app.db.db_mysql_aiomysql import db
 from loguru import logger
-# from backend.app.core.generate_sql_data import generate_role
 
 
 def init_app():
@@ -45,15 +44,14 @@ def init_app():
         logger.info("项目关闭")
         await db.close()
 
+    # 路由
+    from backend.app.controller.authentication import router as authentication_router
+    _app.include_router(authentication_router)
+
     return _app
 
 
 app = init_app()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
 
 if __name__ == '__main__':
