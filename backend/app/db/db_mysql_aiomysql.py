@@ -12,7 +12,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
-from backend.app.config import settings
+# from backend.app.config import settings
+from decouple import config as decouple_config
+
+database_url = decouple_config('DATABASE_URL')
 
 
 class AsyncDatabaseSession:
@@ -25,7 +28,7 @@ class AsyncDatabaseSession:
         return getattr(self.session, name)
 
     def init(self):
-        self.engine = create_async_engine(settings.MYSQL_DB, future=True, echo=True)
+        self.engine = create_async_engine(database_url, future=True, echo=True)
         self.session = sessionmaker(self.engine, expire_on_commit=False, class_=AsyncSession)()
 
     async def create_all(self):
