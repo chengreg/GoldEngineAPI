@@ -6,7 +6,7 @@
 @IDE     ：PyCharm 
 @Author  ：Chen GangQiang
 @Date    ：2023/9/22 16:17 
-@Desc    ：
+@Desc    ：fastapi的实例化文件
 """
 
 from fastapi import FastAPI
@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.core import startup, shutdown
-from app.controller.authentication import router as authentication_router
+from app.api.api_routers import router as api_routers
 
 # 实例化fastapi
 app = FastAPI(debug=settings.DEBUG, title=settings.TITLE, version=settings.VERSION, description=settings.DESCRIPTION)
@@ -25,7 +25,7 @@ app.add_event_handler("startup", startup(app))
 app.add_event_handler("shutdown", shutdown(app))
 
 # 路由
-app.include_router(authentication_router)
+app.include_router(api_routers)
 
 # 跨域设置
 app.add_middleware(

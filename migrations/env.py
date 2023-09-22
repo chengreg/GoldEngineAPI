@@ -11,7 +11,7 @@ from alembic import context
 
 from decouple import config as decouple_config
 
-from app.model.users import *
+from app.models.users import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
