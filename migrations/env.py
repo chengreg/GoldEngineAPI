@@ -11,6 +11,8 @@ from alembic import context
 
 from decouple import config as decouple_config
 
+from app.model.users import *
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -43,7 +45,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    database_url = decouple_config('DATABASE_URL')
+    database_url = decouple_config('LOCAL_DATABASE_URL')
     context.configure(
         url=database_url,
         target_metadata=target_metadata,
@@ -69,7 +71,7 @@ async def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    database_url = decouple_config('DATABASE_URL')
+    database_url = decouple_config('LOCAL_DATABASE_URL')
     connectable = AsyncEngine(
         engine_from_config(
             {"sqlalchemy.url": database_url},

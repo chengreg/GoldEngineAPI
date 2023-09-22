@@ -14,7 +14,6 @@ from enum import Enum as pyEnum
 from app.model.users import TimeMixin
 
 
-
 class UsersStatusEnum(str, pyEnum):
     ACTIVE = "A"  # 活跃状态，表示用户或对象处于活跃状态，通常表示用户可以正常使用平台或功能。
     INACTIVE = "I"  # 非活跃状态，表示用户或对象处于非活跃状态，通常表示用户暂时无法使用平台或功能。

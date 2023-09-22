@@ -6,14 +6,14 @@
 # @Software: PyCharm
 
 from .mixins import TimeMixin
-from .social_account import SocialAccount
-from .social_account import ProviderEnum
+from .permission import Permission
+from .role_permission_link import RolePermissionLink
+from .social_account import SocialAccount, ProviderEnum
 from .user_profile import UserProfile, SexEnum
 from .user_profile_address import UserProfileAddress
 from .user_profile_company import UserProfileCompany
 from .user_role import UserRole
 from .user_role_link import UserRoleLink
-from .users import Users
-from .users import UsersStatusEnum
+from .users import Users, UsersStatusEnum
 
 
